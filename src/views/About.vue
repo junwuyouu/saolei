@@ -2,7 +2,11 @@
 <template>
   <div>
     <h2>扫雷</h2>
-    <h4>剩余雷数：{{ leiHas }}</h4>
+    <h4>剩余雷数：{{ leiHas }} &nbsp;所用时间：{{ time }}秒</h4>
+
+    <br />
+    <hr />
+    <br />
     <div class="map">
       <div
         v-for="(item, index) in mapStart"
@@ -45,6 +49,8 @@
         </div>
       </div>
     </div>
+    <br />
+    <hr />
     <Button type="primary" @click="statMap">重新开始</Button>
     <Modal
       v-model="visible"
@@ -64,12 +70,13 @@ export default {
   data() {
     return {
       mapStart: [], //地图
-      leiNum: 15, //埋雷数量
+      leiNum: 20, //埋雷数量
       //gameOver: false,
       visible: false,
       leiHas: "", //剩余雷数
       massage: "", //消息提示
-      knowNum: "" //已知的格子数量
+      knowNum: "", //已知的格子数量
+      time: 0 //记录用时
     };
   },
 
@@ -80,6 +87,7 @@ export default {
   mounted() {},
   created() {
     this.statMap();
+    this.currentTime();
   },
   methods: {
     //初始化地图
@@ -177,13 +185,21 @@ export default {
         } else {
           this.mapStart[key].clicked = true;
           this.knowNum = 0;
+          // for (let i = 0; i < 150; i++) {
+          //   if (this.mapStart[i].clicked || this.mapStart[i].right) {
+          //     this.knowNum++;
+          //     console.log(this.knowNum);
+          //   }
+          // }
+          // if (this.knowNum == 150) {
+          //   this.visible = true;
+          //   this.massage = "游戏胜利,点击确认重新开始";
+          // }
+          let cont = 0;
           for (let i = 0; i < 150; i++) {
-            if (this.mapStart[i].clicked || this.mapStart[i].right) {
-              this.knowNum++;
-              console.log(this.knowNum);
-            }
+            if (this.mapStart[i].clicked) cont++;
           }
-          if (this.knowNum == 150) {
+          if (cont == 150 - this.leiNum) {
             this.visible = true;
             this.massage = "游戏胜利,点击确认重新开始";
           }
@@ -249,19 +265,28 @@ export default {
           this.leiHas--;
           this.mapStart[key].right = true;
           this.knowNum = 0;
+          // for (let i = 0; i < 150; i++) {
+          //   if (this.mapStart[i].clicked || this.mapStart[i].right) {
+          //     this.knowNum++;
+          //     console.log(this.knowNum);
+          //   }
+          // }
+          // if (this.knowNum == 150) {
+          //   this.visible = true;
+          //   this.massage = "游戏胜利,点击确认重新开始";
+          // }
+          let cont = 0;
           for (let i = 0; i < 150; i++) {
-            if (this.mapStart[i].clicked || this.mapStart[i].right) {
-              this.knowNum++;
-              console.log(this.knowNum);
-            }
+            if (this.mapStart[i].islei && this.mapStart[i].right) cont++;
           }
-          if (this.knowNum == 150) {
+          if (cont == this.leiNum) {
             this.visible = true;
             this.massage = "游戏胜利,点击确认重新开始";
           }
         }
       }
     },
+    //关闭窗口调用函数
     OkModal() {
       //this.$Message.info("Clicked ok");
       //console.log(this.gameOver, this.visible);
@@ -274,6 +299,26 @@ export default {
       //this.$Message.info("Clicked cancel");
       this.gameOver = false;
       //this.visible = false;
+    },
+    //时间函数
+    getTime: function() {
+      var _this = this;
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth() + 1;
+      let dd = new Date().getDate();
+      let hh = new Date().getHours();
+      let mf =
+        new Date().getMinutes() < 10
+          ? "0" + new Date().getMinutes()
+          : new Date().getMinutes();
+      let ss =
+        new Date().getSeconds() < 10
+          ? "0" + new Date().getSeconds()
+          : new Date().getSeconds();
+      _this.time = yy + "-" + mm + "-" + dd + " " + hh + ":" + mf + ":" + ss;
+    },
+    currentTime() {
+      setInterval(this.getTime, 500);
     }
   }
 };
