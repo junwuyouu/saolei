@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld :msg="msg" v-on:msgChange="msgChange"/>
   </div>
 </template>
 
@@ -13,6 +13,17 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  data(){
+	  return{
+		    msg:"修改前"
+	  }
+  },
+  methods:{
+	  msgChange(key){
+		  console.log(key)
+		  this.msg=key;
+	  }
   }
 }
 </script>
