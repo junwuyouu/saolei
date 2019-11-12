@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button @click="change">修改</button>
+    <Button @click="change">修改</Button>
   </div>
 </template>
 

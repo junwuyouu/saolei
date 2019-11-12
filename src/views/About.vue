@@ -13,34 +13,21 @@
         @click.left="cheackDiv(index)"
         @click.right="cheackDivRight(index)"
         @contextmenu.prevent
+        :key="index"
       >
-        <div
-          class="mapDivbegin"
-          v-if="!mapStart[index].clicked && !mapStart[index].right"
-        ></div>
+        <div class="mapDivbegin" v-if="!mapStart[index].clicked && !mapStart[index].right"></div>
         <div
           class="mapDivkong"
-          v-if="
-            mapStart[index].clicked &&
-              mapStart[index].num != '0' &&
-              !mapStart[index].islei
-          "
+          v-if="mapStart[index].clicked && mapStart[index].num != '0' && !mapStart[index].islei"
         >
           {{ item.num }}
         </div>
         <div
           class="mapDivkong"
-          v-if="
-            mapStart[index].clicked &&
-              mapStart[index].num == '0' &&
-              !mapStart[index].islei
-          "
+          v-if="mapStart[index].clicked && mapStart[index].num == '0' && !mapStart[index].islei"
         ></div>
         <!-- 雷的渲染 -->
-        <div
-          class="mapDivlei"
-          v-if="mapStart[index].clicked && mapStart[index].islei"
-        >
+        <div class="mapDivlei" v-if="mapStart[index].clicked && mapStart[index].islei">
           <Icon type="logo-xbox" />
         </div>
         <!-- 红旗的渲染 -->
@@ -52,19 +39,14 @@
     <br />
     <hr />
     <Button type="primary" @click="statMap">重新开始</Button>
-    <Modal
-      v-model="visible"
-      title="游戏结束"
-      @on-ok="OkModal"
-      @on-cancel="CloseModal"
-    >
+    <Modal v-model="visible" title="游戏结束" @on-ok="OkModal" @on-cancel="CloseModal">
       <p>{{ massage }}</p>
     </Modal>
   </div>
 </template>
   
 <script>
-import { stat, close } from "fs";
+import { stat, close } from 'fs';
 
 export default {
   data() {
@@ -73,9 +55,9 @@ export default {
       leiNum: 20, //埋雷数量
       //gameOver: false,
       visible: false,
-      leiHas: "", //剩余雷数
-      massage: "", //消息提示
-      knowNum: "", //已知的格子数量
+      leiHas: '', //剩余雷数
+      massage: '', //消息提示
+      knowNum: '', //已知的格子数量
       time: 0 //记录用时
     };
   },
@@ -97,10 +79,10 @@ export default {
       this.leiHas = this.leiNum;
       for (let i = 0; i < 150; i++) {
         let obj = {};
-        obj["islei"] = false;
-        obj["clicked"] = false;
-        obj["num"] = 0;
-        obj["right"] = false;
+        obj['islei'] = false;
+        obj['clicked'] = false;
+        obj['num'] = 0;
+        obj['right'] = false;
         this.mapStart.push(obj);
       }
       //随机埋雷
@@ -114,6 +96,8 @@ export default {
 
         if (this.mapStart[num].islei == false) {
           this.mapStart[num].islei = true;
+        } else {
+          i--;
         }
       }
     },
@@ -181,7 +165,7 @@ export default {
             this.mapStart[i].right = false;
           }
           this.visible = true;
-          this.massage = "游戏失败,点击确认重新开始";
+          this.massage = '游戏失败,点击确认重新开始';
         } else {
           this.mapStart[key].clicked = true;
           this.knowNum = 0;
@@ -201,7 +185,7 @@ export default {
           }
           if (cont == 150 - this.leiNum) {
             this.visible = true;
-            this.massage = "游戏胜利,点击确认重新开始";
+            this.massage = '游戏胜利,点击确认重新开始';
           }
           if (this.mapStart[key].num == 0) {
             if (
@@ -281,7 +265,7 @@ export default {
           }
           if (cont == this.leiNum) {
             this.visible = true;
-            this.massage = "游戏胜利,点击确认重新开始";
+            this.massage = '游戏胜利,点击确认重新开始';
           }
         }
       }
@@ -308,14 +292,10 @@ export default {
       let dd = new Date().getDate();
       let hh = new Date().getHours();
       let mf =
-        new Date().getMinutes() < 10
-          ? "0" + new Date().getMinutes()
-          : new Date().getMinutes();
+        new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
       let ss =
-        new Date().getSeconds() < 10
-          ? "0" + new Date().getSeconds()
-          : new Date().getSeconds();
-      _this.time = yy + "-" + mm + "-" + dd + " " + hh + ":" + mf + ":" + ss;
+        new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+      _this.time = yy + '-' + mm + '-' + dd + ' ' + hh + ':' + mf + ':' + ss;
     },
     currentTime() {
       setInterval(this.getTime, 500);
