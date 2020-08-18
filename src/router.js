@@ -14,12 +14,17 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/Saolei.vue')
     },
     {
       path: '/eluosi',
       name: 'eluuosi',
       component: () => import('./views/Eluosi.vue')
-    }
+    },
+    {
+      path: '/snake',
+      name: 'snake',
+      component: () => import('./views/Snake.vue')
+    },
   ]
 })

@@ -636,12 +636,17 @@ export default {
       this.playGame();
     },
     cancel() {
-      //this.$Message.info('Clicked cancel');
+      this.gameOver=false;
+      this.gamePause=true
     },
     restart() {
       this.statMap();
       this.randomSquare();
-      // this.playGame();
+      console.log(this.gameOver,this.gamePause)
+      if(!this.gameOver&&this.gamePause){
+       this.playGame(); 
+      }
+       //
     }
   },
   //接收键盘事件
